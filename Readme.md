@@ -15,8 +15,8 @@ This is a Node.js-based user authentication system that includes functionality f
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/user-auth-system.git
-   cd user-auth-system
+   git clone https://github.com/Jsbist21/user-auth-task.git
+   cd user-auth-task
    ```
 
 2. Install dependencies:
@@ -30,6 +30,7 @@ This is a Node.js-based user authentication system that includes functionality f
    Create a `.env` file in the root of your project and add the following environment variables:
 
    ```env
+   MONGODB_URI=your_mongodbURI
    JWT_SECRET=your_jwt_secret_key
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASS=your_email_password
