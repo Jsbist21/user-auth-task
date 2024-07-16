@@ -23,7 +23,7 @@ const togglePostLike = asyncHandler(async (req, res) => {
   }
 
   await Like.create({
-    video: videoId,
+    post: postId,
     likedBy: req.user?._id,
   });
 
