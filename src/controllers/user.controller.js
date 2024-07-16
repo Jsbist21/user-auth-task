@@ -89,18 +89,31 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const loggedInUser = User.findById(user._id).select("-password");
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      {
-        user: {
-          _id: loggedInUser._id,
-          username: loggedInUser.username,
+  const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "2h",
+  });
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: {
+            _id: loggedInUser._id,
+            username: loggedInUser.username,
+            accessToken,
+          },
         },
-      },
-      "User logged in successfully"
-    )
-  );
+        "User logged in successfully"
+      )
+    );
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {
