@@ -87,7 +87,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Incorrect Password");
   }
 
-  const loggedInUser = User.findById(user._id).select("-password");
+  const loggedInUser = await User.findById(user._id).select("-password");
 
   const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "2h",

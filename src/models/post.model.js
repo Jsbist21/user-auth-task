@@ -1,9 +1,13 @@
 import mongoose, { Schema } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const postSchema = new Schema(
   {
     postImage: {
-      type: String,
+      type: {
+        url: String,
+        public_id: String,
+      },
     },
 
     content: {
@@ -17,5 +21,7 @@ const postSchema = new Schema(
   },
   { timestamps: true }
 );
+
+postSchema.plugin(mongooseAggregatePaginate);
 
 export const Post = mongoose.model("Post", postSchema);

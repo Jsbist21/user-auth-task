@@ -30,8 +30,8 @@ import commentRouter from "./routes/comment.routes.js";
 
 //routes declaration
 app.use("/api/v1/users", userRouter);
-app.use("api/v1/post", postRouter);
-app.use("api/v1/likes", likeRouter);
-app.use("api/v1/comment", commentRouter);
+app.use("/api/v1/post", postRouter);
+app.use("/api/v1/likes", likeRouter);
+app.use("/api/v1/comment", commentRouter);
 
 export { app };

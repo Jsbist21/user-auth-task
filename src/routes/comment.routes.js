@@ -5,6 +5,6 @@ import { authenticate } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.route("/:videoId").post(authenticate, addCommentToPost);
+router.route("/:postId").post(authenticate, addCommentToPost);
 
 export default router;

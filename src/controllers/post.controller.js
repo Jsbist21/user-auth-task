@@ -1,7 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteOnCloudinary } from "../utils/cloudinary.js";
 import { Post } from "../models/post.model.js";
 import { isValidObjectId } from "mongoose";
 import { Comment } from "../models/comment.model.js";
@@ -28,7 +28,10 @@ const createPost = asyncHandler(async (req, res) => {
 
   const post = await Post.create({
     content,
-    postImage: postImage.url,
+    postImage: {
+      url: postImage.url,
+      public_id: postImage.public_id,
+    },
     owner: req.user?._id,
   });
 
@@ -239,7 +242,7 @@ const deletePost = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid post id");
   }
 
-  const post = await findById(postId);
+  const post = await Post.findById(postId);
 
   if (!post) {
     throw new ApiError(404, "post not found");
@@ -249,7 +252,13 @@ const deletePost = asyncHandler(async (req, res) => {
     throw new ApiError(403, "You do not have permission to delete this post");
   }
 
-  await post.remove();
+  const postDeleted = await Post.findByIdAndDelete(postId);
+
+  if (!postDeleted) {
+    throw new ApiError(400, "Failed to delete the post please try again");
+  }
+
+  await deleteOnCloudinary(post.postImage.public_id);
 
   await Comment.deleteMany({ post: postId });
   await Like.deleteMany({ post: postId });

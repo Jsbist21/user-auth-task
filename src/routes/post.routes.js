@@ -13,7 +13,16 @@ const router = Router();
 router
   .route("/")
   .get(getAllPosts)
-  .post(authenticate, upload.single("postImage"), createPost);
+  .post(
+    authenticate,
+    upload.fields([
+      {
+        name: "postImage",
+        maxCount: 1,
+      },
+    ]),
+    createPost
+  );
 
 router
   .route("/p/:postId")
